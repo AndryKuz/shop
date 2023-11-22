@@ -1,12 +1,33 @@
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+
+import { filteredLessPrice } from "../../features/products/productsSlice";
+
 import Poster from "../Poster/Poster";
-import cl from "../../styles/Home.module.scss";
+import Products from "../Products/Products";
+import Baner from "../Baner/Baner";
+import Categories from "../Categories/Categories";
 
 
 const Home = () => {
+  const { list, filtered } = useSelector((state) => state.products);
+  const dispatch = useDispatch();
+
+  useEffect(()=> {
+    if(!list.length) return;
+
+    dispatch(filteredLessPrice(100))
+  }, [dispatch, list.length]);
+  
+
   return (
-    
+    <>
       <Poster/>
-    
+      <Products products={list} amount={5} title='Shop'/>
+      <Categories title='Category'/>
+      <Baner/>
+      <Products products={filtered} amount={5} title='Less 100$'/>  
+    </>
   );
 };
 
