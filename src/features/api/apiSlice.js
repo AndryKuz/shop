@@ -1,16 +1,16 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-import { mokapiUrl } from '../../components/utils/constants';
+import { bASEUrl } from '../../components/utils/constants';
 
 
 
 export const apiSlice = createApi(({
     reducerPath: 'api',
-    baseQuery: fetchBaseQuery({baseUrl: mokapiUrl}),
+    baseQuery: fetchBaseQuery({ baseUrl: bASEUrl }),
     tagTypes: ['Product'],
     endpoints: (builder) => ({
         getProduct: builder.query({
-            query: ({ id }) => `products/${id}`,
+            query: ({ id }) => `/products/${id}`,
             providesTags: ['Product'],
         })
     })
@@ -19,4 +19,3 @@ export const apiSlice = createApi(({
 
 export const { useGetProductQuery } = apiSlice;
 
-export default apiSlice.reducer;

@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { mokapiUrl } from "../../components/utils/constants";
+import { bASEUrl } from "../../components/utils/constants";
 
 
 
 export const getCategory = createAsyncThunk(
   "category/getCategory",
   async (_, thunkAPI) => {
-    const {data} = await axios.get(`${mokapiUrl}`);
+    const {data} = await axios.get(`${bASEUrl}/categories`);
     return data;
     
    

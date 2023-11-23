@@ -10,7 +10,8 @@ const AppRoutes = () => {
     <Routes>
       <Route index element={<Home/>}/>
       <Route path={ROUTES.PRODUCT} element={<SingleProducts/>}/>    
-      {/* ROUTES.PRODUCT из routes.js где PRODUCT products/:id   То есть при нажатии на елемент (компонент SingleProducts) будет роут  */}
+      {/* ROUTES.PRODUCT из routes.js где PRODUCT products/:id   То есть при нажатии на елемент (компонент SingleProducts) будет маршрут /products/:id
+       */}
     </Routes>
   );
 };

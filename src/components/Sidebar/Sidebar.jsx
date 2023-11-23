@@ -3,21 +3,16 @@ import cl from "../../styles/Sidebar.module.scss";
 import { useSelector } from "react-redux";
 
 const Sidebar = () => {
-  const { list } = useSelector(({categories}) => categories);
-
-  const uniqCat = [...new Set(list.map(item => JSON.stringify(item.category)))].map(item => JSON.parse(item));
-  
-  
-  
+  const  listCat = useSelector(state => state.categories.list);
 
   return (
     <section className={cl.sidebar}>
       <div className={cl.title}>Categories</div>
       <nav>
         <ul className={cl.menu}>
-          {uniqCat.map((item, index) => (
-            <li key={index} >
-              <NavLink className={({isActive}) => `${cl.link} ${isActive ? cl.active : ''}`} to={`categories/${index + 1}`}>{item}</NavLink>
+          {listCat.map(({ id, name}) => (
+            <li key={id} >
+              <NavLink className={({isActive}) => `${cl.link} ${isActive ? cl.active : ''}`} to={`categories/${id}`}>{name}</NavLink>
             </li>
           ))}
         </ul>

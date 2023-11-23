@@ -10,8 +10,13 @@ import Categories from "../Categories/Categories";
 
 
 const Home = () => {
-  const { list, filtered } = useSelector((state) => state.products);
+  const {
+    products: {list, filtered},
+    categories,
+  } = useSelector((state) => state)
   const dispatch = useDispatch();
+  
+  
 
   useEffect(()=> {
     if(!list.length) return;
@@ -24,7 +29,7 @@ const Home = () => {
     <>
       <Poster/>
       <Products products={list} amount={5} title='Shop'/>
-      <Categories title='Category'/>
+      <Categories cat={categories.list} amount={5} title='Category'/>
       <Baner/>
       <Products products={filtered} amount={5} title='Less 100$'/>  
     </>

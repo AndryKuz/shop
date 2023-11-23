@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { mokapiUrl } from "../../components/utils/constants";
+import { bASEUrl } from "../../components/utils/constants";
+import { shuffle } from "../../components/utils/common";
 
 
 
 export const getProducts = createAsyncThunk(
   "products/getProducts",
   async (_, thunkAPI) => {
-    const {data} = await axios.get(`${mokapiUrl}`);
+    const {data} = await axios.get(`${bASEUrl}/products`);
     return data;
     
   }
@@ -15,7 +16,7 @@ export const getProducts = createAsyncThunk(
 const initialState = {
   list: [],
   filtered: [],
-//   related: [],
+  related: [],
   isLoading: false,
 };
 
@@ -27,6 +28,10 @@ export const productsSlice = createSlice({
     filteredLessPrice: (state, {payload}) => {
       state.filtered = state.list.filter(({price}) => price < payload)
     },
+    getRelatedProducts: (state, {payload}) => {
+      const list = state.list.filter(({ category: { id }}) => id === payload);
+      state.related = shuffle(list);
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -43,5 +48,5 @@ export const productsSlice = createSlice({
       });
   },
 });
-export const {filteredLessPrice} = productsSlice.actions;
+export const { filteredLessPrice, getRelatedProducts } = productsSlice.actions;
 export default productsSlice.reducer;
