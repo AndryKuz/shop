@@ -1,5 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import cl from "../../styles/Header.module.scss";
 
@@ -8,7 +9,28 @@ import { ROUTES } from "../../utils/routes";
 import logo from "../../images/logo.svg";
 import avatar from "../../images/avatar.jpg";
 
+import { toggleForm } from "../App/user/userSlice";
+
 const Header = () => {
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [values, setValues] = useState({ name: 'Guest', avatar: avatar });
+
+  const { currentUser } = useSelector(({ user }) => user);        // currentUser будет содержать в себе отправленние данные с формы при регистрации
+
+  const handleClick = () => {
+    if(!currentUser) dispatch(toggleForm(true))
+    else navigate(ROUTES.PROFILE);
+  };
+  
+
+  useEffect(() => {
+    if(!currentUser) return;
+
+    setValues(currentUser);
+  },[currentUser])
   return (
     <div className={cl.header}>
       <div className={cl.logo}>
@@ -17,12 +39,12 @@ const Header = () => {
         </Link>
       </div>
       <div className={cl.info}>
-        <div className={cl.user}>
+        <div className={cl.user} onClick={handleClick}>
           <div
             className={cl.avatar}
-            style={{ backgroundImage: `url(${avatar})` }}
+            style={{ backgroundImage: `url(${values.avatar})` }}
           ></div>
-          <div className={cl.username}>Guest</div>
+          <div className={cl.username}>{values.name}</div>
         </div>
         <form className={cl.form}>
           <div className={cl.icon}>
@@ -90,7 +112,7 @@ const Header = () => {
           </div>
           {false && <div className={cl.box}></div>}
         </form>
-
+        
         <div className={cl.account}>
           <Link to={ROUTES} className={cl.favourites}>
             <svg

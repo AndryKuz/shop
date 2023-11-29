@@ -57,13 +57,13 @@
 }
 
 .close svg {
-  width: 20px;
-  height: 20px;
-  stroke: var(--dark-sea);
+  width: 25px;
+  height: 25px;
+  fill:#fff;
 }
 
 .close:hover svg {
-  stroke: #fff;
+  fill: #8b57c6;
 }
 
 .link {
