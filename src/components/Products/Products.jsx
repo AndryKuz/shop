@@ -3,6 +3,7 @@ import cl from "../../styles/Products.module.scss";
 
 const Products = ({ title, products = [], amount }) => {
     const list = products.filter((_, i) => i < amount);
+    
   return (
     <section className={cl.products}>
       {title && <h2>{title}</h2>}

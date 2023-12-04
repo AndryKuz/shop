@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,15 +10,36 @@ import logo from "../../images/logo.svg";
 import avatar from "../../images/avatar.jpg";
 
 import { toggleForm } from "../App/user/userSlice";
+import { useGetProductsQuery } from "../../features/api/apiSlice";
 
 const Header = () => {
+
+  const [searchValue, setSearchValue] = useState('');
+  const inputRef = useRef(null);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [values, setValues] = useState({ name: 'Guest', avatar: avatar });
 
-  const { currentUser } = useSelector(({ user }) => user);        // currentUser будет содержать в себе отправленние данные с формы при регистрации
+  const {data, isLoading} = useGetProductsQuery({title: searchValue});
+  
+  
+
+  const { currentUser, cart } = useSelector(({ user }) => user);        // currentUser будет содержать в себе отправленние данные с формы при регистрации
+
+  const handleSearch = ({target: {value}}) => {
+    setSearchValue(value)
+  }
+
+  const handlClearClick = () => {
+    setSearchValue('');
+    
+    if(inputRef.current) {
+      inputRef.current.focus();
+    }
+  
+  }
 
   const handleClick = () => {
     if(!currentUser) dispatch(toggleForm(true))
@@ -65,12 +86,14 @@ const Header = () => {
               name="search"
               placeholder="Search ....."
               autoComplete="off"
-              onChange={() => {}}
-              value=""
+              onChange={handleSearch}
+              value={searchValue}
+              ref={inputRef}
             />
           </div>
           <div>
             <svg
+              onClick={handlClearClick}
               className={cl.clearInp}
               xmlns="http://www.w3.org/2000/svg"
               xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -110,7 +133,22 @@ const Header = () => {
               </g>
             </svg>
           </div>
-          {false && <div className={cl.box}></div>}
+          {searchValue && (
+            <div className={cl.box}>
+              {isLoading 
+                ? 'LOADING' 
+                : !data.length 
+                ? 'no results' 
+                : data.map(({title, images, id}) => {
+                  return (
+                    <Link to={`/products/${id}`} key={id} className={cl.item} onClick={handlClearClick}>
+                      <div className={cl.image} style={{backgroundImage:`url(${images[0]})`}}></div>
+                      <div className={cl.title}>{title}</div>
+                    </Link>
+                )
+              })}
+            </div>
+          )}
         </form>
         
         <div className={cl.account}>
@@ -144,7 +182,8 @@ const Header = () => {
                 <path d="M158.08,165.49a15,15,0,0,1-14.23-10.26L118.14,78H70.7a15,15,0,1,1,0-30H129a15,15,0,0,1,14.23,10.26l29.13,87.49a15,15,0,0,1-14.23,19.74Z" />
               </g>
             </svg>
-            <span className={cl.count}>2</span>
+            {!!cart.length && <span className={cl.count}>{cart.length}</span>}
+            
           </Link>
         </div>
       </div>
