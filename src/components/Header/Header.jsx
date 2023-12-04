@@ -182,7 +182,7 @@ const Header = () => {
                 <path d="M158.08,165.49a15,15,0,0,1-14.23-10.26L118.14,78H70.7a15,15,0,1,1,0-30H129a15,15,0,0,1,14.23,10.26l29.13,87.49a15,15,0,0,1-14.23,19.74Z" />
               </g>
             </svg>
-            {!!cart.length && <span className={cl.count}>{cart.length}</span>}
+            {!!cart.length && (<span className={cl.count}>{cart.length}</span>)}
             
           </Link>
         </div>
